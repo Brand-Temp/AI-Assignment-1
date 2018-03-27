@@ -2,12 +2,24 @@ import sys
 
 # TODO: node object
 
+class Node(object):
+    def __init__(self, number, h):
+        self.number = number
+        self.h = h
+        self.children = []
+
+    def add_child(self, obj):
+        self.children.append(obj)
+
 #-----------------------------#
 #     Build Decision Tree     #
 #-----------------------------#
 
 # TODO
+# NOTE: Tree is built until there is 1000 nodes
 def build_tree(start, forbiddens):
+    root = Node(start, 0)
+
 
 #-----------------------------#
 #          Searches           #
@@ -16,7 +28,35 @@ def build_tree(start, forbiddens):
 #TODO
 def a_star():
 
-def bfs():
+def bfs(root, goal):
+    expanded = []
+    fringe = []
+
+    expanded.append(root)
+
+    if root.number == goal:
+        path = get_path(root)
+        print(path)
+        print(expanded)
+        return
+
+    for n in root.children:
+        fringe.append(n)
+
+    for n in fringe:
+        if n in expanded:
+            continue
+        else:
+            expanded.append(n)
+
+            if n.number == goal:
+                path = get_path(root)
+                print(path)
+                print(expanded)
+                return
+            for m in n.children:
+                fringe.append(m)
+
 
 def dfs():
 
