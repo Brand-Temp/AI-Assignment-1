@@ -2,23 +2,139 @@ import sys
 
 # TODO: node object
 
-class Node(object):
-    def __init__(self, number, h):
-        self.number = number
-        self.h = h
+class Node:
+    def __init__(self):
+        self.number = None
+        self.h = None
         self.children = []
+        self.previous_change = None
+        self.parent = None
 
-    def add_child(self, obj):
-        self.children.append(obj)
-
+    def __eq__(self, other):
+        if self.number == other.number:
+            if self.previous_change == other.previous_change:
+                return True
+        return False
 #-----------------------------#
 #     Build Decision Tree     #
 #-----------------------------#
 
 # TODO
-# NOTE: Tree is built until there is 1000 nodes
-def build_tree(start, forbiddens):
-    root = Node(start, 0)
+# Add previous change to new nodes and h values
+def generate_children(node):
+    if node.previous_change is None:
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] -= 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] += 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] -= 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] += 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] -= 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] += 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+    elif node.previous_change is 0:
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] -= 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] += 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] -= 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] += 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+    elif node.previous_change is 1:
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] -= 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] += 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] -= 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[2] += 1
+        newChild.previous_change = 2
+        newChild.parent = node
+        node.children.append(newChild)
+    elif node.previous_change is 2:
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] -= 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[0] += 1
+        newChild.previous_change = 0
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] -= 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+        newChild = Node()
+        newChild.number = node.number
+        newChild.number[1] += 1
+        newChild.previous_change = 1
+        newChild.parent = node
+        node.children.append(newChild)
+    return node.children
 
 
 #-----------------------------#
@@ -40,7 +156,7 @@ def bfs(root, goal):
         print(expanded)
         return
 
-    for n in root.children:
+    for n in generate_children(root):
         fringe.append(n)
 
     for n in fringe:
@@ -75,8 +191,13 @@ if length(sys.argv) != 3:
 search = sys.argv[1]
 file = open(sys.argv[2])
 start_state = file.readline().replace('\n', '')
+start_state = list(start_state)
 end_state = file.readline().reaplce('\n', '')
-forbidden_values = file.readline(3).split(',')
+end_state = list(end_state)
+forbidden_values_readin = file.readline(3).split(',')
+forbidden_values = []
+for value in forbidden_values_readin:
+    forbidden_values.append(list(value))
 decision_tree_root = build_tree(start_state, forbidden_values)
 
 if search is 'B':
