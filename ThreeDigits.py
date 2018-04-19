@@ -172,7 +172,7 @@ def generate_children(node, goal):
     #print("Returned children for: " + str(node))
     #print(', '.join(str(e) for e in node.children))
 
-    #Elimate <0 values
+    # Elimate <0 values
     for n in node.children:
         if n.number[0] < 0:
             n.number[0] = 0
@@ -180,6 +180,8 @@ def generate_children(node, goal):
             n.number[1] = 0
         elif n.number[2] < 0:
             n.number[2] = 0
+
+    # Eliminate nodes same as parent
     return node.children
 
 
