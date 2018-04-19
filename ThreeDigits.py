@@ -19,12 +19,11 @@ class Node:
         return ''.join(str(e) for e in self.number)
 
     def __eq__(self, other):
+        if other is None:
+            return False
         if self.number == other.number:
-            other_children = other.get_children_numbers
-            for i in range(0, len(self.children)):
-                if self.children[i].number in other_children:
-                    return False
-            return True
+            if self.previous_change == other.previous_change:
+                return True
         return False
 
     def get_children_numbers(self):
@@ -40,7 +39,15 @@ class Node:
 # Add previous change to new nodes and h values
 
 def get_path(node):
-    return "Make Path"
+    path_reversed = list()
+    path_reversed.append(node)
+    while node.parent != None:
+        path_reversed.append(node.parent)
+        node = node.parent
+    path = list()
+    for i in range(0, len(path_reversed)):
+        path.append(path_reversed.pop())
+    return path
 
 def generate_children(node, goal):
     #print("Current children for: " + str(node))
@@ -60,6 +67,7 @@ def generate_children(node, goal):
         #print(newChild.number)
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         node.children = new_children
         newChild = Node()
@@ -67,6 +75,7 @@ def generate_children(node, goal):
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         node.children = new_children
         newChild = Node()
@@ -74,24 +83,28 @@ def generate_children(node, goal):
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         new_children.append(newChild)
         node.children = new_children
     elif node.previous_change is 0:
@@ -100,24 +113,28 @@ def generate_children(node, goal):
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
     elif node.previous_change is 1:
         newChild = Node()
@@ -125,24 +142,28 @@ def generate_children(node, goal):
         newChild.number[0] -= 1
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
     elif node.previous_change is 2:
         newChild = Node()
@@ -150,24 +171,28 @@ def generate_children(node, goal):
         newChild.number[0] -= 1
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
+        newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
         node.children.append(newChild)
     #print("Returned children for: " + str(node))
     #print(', '.join(str(e) for e in node.children))
@@ -175,11 +200,11 @@ def generate_children(node, goal):
     # Elimate <0 values
     for n in node.children:
         if n.number[0] < 0:
-            n.number[0] = 0
+            node.children.remove(n)
         elif n.number[1] < 0:
-            n.number[1] = 0
+            node.children.remove(n)
         elif n.number[2] < 0:
-            n.number[2] = 0
+            node.children.remove(n)
 
     # Eliminate nodes same as parent
     return node.children
@@ -205,6 +230,7 @@ def bfs(root, goal, forbiddens):
     if root.number == goal:
         path = get_path(root)
         print(path)
+        print(','.join(str(e) for e in path))
         print(','.join(str(e) for e in expanded))
         return
 
@@ -212,15 +238,16 @@ def bfs(root, goal, forbiddens):
         if (n.number in forbiddens):
             continue
         fringe.append(n)
-        print("Error checking printout:")
-        print(','.join(str(e) for e in fringe))
+        #print("Error checking printout:")
+        #print(','.join(str(e) for e in fringe))
 
     for i in range(1, 1000):
         n = fringe.pop(0)
         expanded.append(n)
         if n.number == goal:
             path = get_path(n)
-            print(path)
+            #print(path)
+            print(','.join(str(e) for e in path))
             print(','.join(str(e) for e in expanded))
             return
         else:
@@ -228,18 +255,81 @@ def bfs(root, goal, forbiddens):
                 if c.number in forbiddens or c in expanded or c.number == root.number:
                     continue
                 fringe.append(c)
-                print("Error checking printout:")
-                print(','.join(str(e) for e in fringe))
+                #print("Error checking printout:")
+                #print(','.join(str(e) for e in fringe))
     #print("No solution found.")
     #print("Error checking printout:")
     #print(print(','.join(str(e) for e in expanded)))
 
 
-def dfs():
-    return
+def dfs(root, goal, forbiddens):
+    expanded = []
+    fringe = []
 
-def ids():
-    return
+    expanded.append(root)
+
+    if root.number == goal:
+        path = get_path(root)
+        print(','.join(str(e) for e in path))
+        print(','.join(str(e) for e in expanded))
+        return
+
+    for n in generate_children(root, goal):
+        if (n.number in forbiddens):
+            continue
+        fringe.append(n)
+
+    for i in range(1, 1000):
+        n = fringe.pop(0)
+        expanded.append(n)
+        if n.number == goal:
+            path = get_path(n)
+            print(','.join(str(e) for e in path))
+            print(','.join(str(e) for e in expanded))
+            return
+        else:
+            i = 0
+            for c in generate_children(n, goal):
+                if c.number in forbiddens or str(c) in str(expanded):
+                    continue
+                fringe.insert(i, c)
+                i += 1
+        #print(fringe)
+        #print(expanded)
+        #print("\n")
+
+def ids(root, goal, forbiddens):
+    expanded = []
+    fringe = []
+
+    expanded.append(root)
+
+    if root.number == goal:
+        path = get_path(root)
+        print(','.join(str(e) for e in path))
+        print(','.join(str(e) for e in expanded))
+        return
+
+    for n in generate_children(root, goal):
+        if n.number in forbiddens:
+            continue
+        fringe.append(n)
+
+    for i in range(1, 1000):
+        n = fringe.pop(0)
+        expanded.append(n)
+        if n.number == goal:
+            path = get_path(n)
+            print(','.join(str(e) for e in path))
+            print(','.join(str(e) for e in expanded))
+            return
+        else:
+            i = 0
+            for c in generate_children(n, goal):
+                if c.number in forbiddens or str(c) in str(expanded):
+                    continue
+                fringe.insert(i, c)
+                i += 1
 
 def greedy():
     return
@@ -259,7 +349,7 @@ start_state = file.readline().replace('\n', '')
 start_state = list(start_state)
 end_state = file.readline().replace('\n', '')
 end_state = list(end_state)
-forbidden_values_readin = file.readline(3).split(',')
+forbidden_values_readin = file.readline().split(',')
 forbidden_values = []
 for value in forbidden_values_readin:
     forbidden_values.append(list(value))
@@ -274,18 +364,17 @@ for i in range(0, len(forbidden_values)):
 decision_tree_root = Node()
 decision_tree_root.number = start_state
 
-
 if search is 'B':
     bfs(decision_tree_root, end_state, forbidden_values)
-#elif search is 'D':
-#    dfs(decision_tree_root, end_state)
-#elif search is 'I':
-#    ids(decision_tree_root, end_state)
-#elif search is 'G':
-#    greedy(decision_tree_root, end_state)
-#elif search is 'A':
-#    a_star(decision_tree_root, end_state)
-#elif search is 'H':
-#    hill_climbing(decision_tree_root, end_state)
-#else:
-    #print("Invalid search")
+elif search is 'D':
+    dfs(decision_tree_root, end_state, forbidden_values)
+elif search is 'I':
+    ids(decision_tree_root, end_state)
+elif search is 'G':
+    greedy(decision_tree_root, end_state)
+elif search is 'A':
+    a_star(decision_tree_root, end_state)
+elif search is 'H':
+    hill_climbing(decision_tree_root, end_state)
+else:
+    print("Invalid search")
