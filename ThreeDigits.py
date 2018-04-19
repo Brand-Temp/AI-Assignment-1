@@ -5,24 +5,33 @@ from typing import List
 
 
 class Node:
-    def __init__(self):
-        self.number = None
-        self.h = None
-        self.children = []
-        self.previous_change = None
-        self.parent = None
-
-    def __str__(self):
-        return ''.join(str(e) for e in self.number)
+    def __init__(self, pnum = None, ph = 0, pchildren = [], pchange = None, pparent = None):
+        self.number = pnum
+        self.h = ph
+        self.children = list(pchildren)
+        self.previous_change = pchange
+        self.parent = pparent
 
     def __repr__(self):
         return ''.join(str(e) for e in self.number)
 
+    def __str__(self):
+        return ''.join(str(e) for e in self.number)
+
     def __eq__(self, other):
         if self.number == other.number:
-            if self.previous_change == other.previous_change:
-                return True
+            other_children = other.get_children_numbers
+            for i in range(0, len(self.children)):
+                if self.children[i].number in other_children:
+                    return False
+            return True
         return False
+
+    def get_children_numbers(self):
+        c = list(self.children[0].number)
+        for i in range(1, len(self.children)):
+            c.append(self.children[i].number)
+        return c
 #-----------------------------#
 #     Build Decision Tree     #
 #-----------------------------#
@@ -33,137 +42,144 @@ class Node:
 def get_path(node):
     return "Make Path"
 
-def generate_children(node):
+def generate_children(node, goal):
+    #print("Current children for: " + str(node))
+    #print(', '.join(str(e) for e in node.children))
+
+    new_children = []
+    #print("Curren new_children contents:")
+    #print(new_children)
     if node.previous_change is None:
-        new_children = []
-        print("Generating root children...")
+        #print("Generating root children...")
         newChild = Node()
-        newChild.number = node.number
-        print("Child 1 num before:")
-        print(newChild.number)
+        newChild.number = list(node.number)
+        #print("Child 1 num before:")
+        #print(newChild.number)
         newChild.number[0] -= 1
-        print("Child 1 num after:")
-        print(newChild.number)
+        #print("Child 1 num after:")
+        #print(newChild.number)
         newChild.previous_change = 0
         newChild.parent = node
         new_children.append(newChild)
-        for c in new_children:
-            print(c.number)
         node.children = new_children
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         new_children.append(newChild)
-        for c in new_children:
-            print(c.number)
         node.children = new_children
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
         new_children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         new_children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         new_children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         new_children.append(newChild)
-        print("New_Children:")
-        for c in new_children:
-            print(c.number)
         node.children = new_children
     elif node.previous_change is 0:
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         node.children.append(newChild)
     elif node.previous_change is 1:
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[0] -= 1
         newChild.previous_change = 0
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         node.children.append(newChild)
     elif node.previous_change is 2:
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[0] -= 1
         newChild.previous_change = 0
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
         node.children.append(newChild)
         newChild = Node()
-        newChild.number = node.number
+        newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         node.children.append(newChild)
-    print("Returned children:")
-    print(','.join(str(e) for e in node.children))
+    #print("Returned children for: " + str(node))
+    #print(', '.join(str(e) for e in node.children))
+
+    #Elimate <0 values
+    for n in node.children:
+        if n.number[0] < 0:
+            n.number[0] = 0
+        elif n.number[1] < 0:
+            n.number[1] = 0
+        elif n.number[2] < 0:
+            n.number[2] = 0
     return node.children
 
 
@@ -180,9 +196,9 @@ def bfs(root, goal, forbiddens):
     fringe = []
 
     expanded.append(root)
-    print("beginning on:")
-    print(print(','.join(str(e) for e in expanded)))
-    print("Starting search...")
+    #print("beginning on:")
+    #print(','.join(str(e) for e in expanded))
+    #print("Starting search...")
 
     if root.number == goal:
         path = get_path(root)
@@ -190,26 +206,31 @@ def bfs(root, goal, forbiddens):
         print(','.join(str(e) for e in expanded))
         return
 
-    for n in generate_children(root):
+    for n in generate_children(root, goal):
         if (n.number in forbiddens):
             continue
         fringe.append(n)
+        print("Error checking printout:")
+        print(','.join(str(e) for e in fringe))
 
-    for i in range(0, 50):
+    for i in range(1, 1000):
         n = fringe.pop(0)
+        expanded.append(n)
         if n.number == goal:
             path = get_path(n)
             print(path)
             print(','.join(str(e) for e in expanded))
             return
         else:
-            for c in generate_children(n):
-                if c.number in forbiddens:
+            for c in generate_children(n, goal):
+                if c.number in forbiddens or c in expanded or c.number == root.number:
                     continue
                 fringe.append(c)
-    print("No solution found.")
-    print("Error checking printout:")
-    print(print(','.join(str(e) for e in expanded)))
+                print("Error checking printout:")
+                print(','.join(str(e) for e in fringe))
+    #print("No solution found.")
+    #print("Error checking printout:")
+    #print(print(','.join(str(e) for e in expanded)))
 
 
 def dfs():
