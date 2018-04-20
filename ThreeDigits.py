@@ -2,6 +2,33 @@ import sys
 
 # TODO: node object
 from typing import List
+from queue import PriorityQueue
+
+class Queue:
+    def __init__(self):
+        self.q = list()
+
+    def put(self, i):
+        #print("Putting " + str(i) + " into queue")
+        self.q.append(i)
+
+    def get(self):
+        start = len(self.q) - 1
+        end = -1
+        lowest = self.q[start]
+        for i in range (start, end, -1):
+            item = self.q[i]
+            if item.h < lowest.h:
+                lowest = item
+        #print(str(lowest))
+        self.q.remove(lowest)
+        return lowest
+
+    def empty(self):
+        if len(self.q) == 0:
+            return True
+        else:
+            return False
 
 
 class Node:
@@ -25,6 +52,14 @@ class Node:
             if self.previous_change == other.previous_change:
                 return True
         return False
+
+    def __lt__(self, other):
+        if other is None:
+            return True
+        if self.h * (-1) < other.h * (-1):
+            return True
+        else:
+            return False
 
     def get_children_numbers(self):
         c = list(self.children[0].number)
@@ -199,12 +234,15 @@ def generate_children(node, goal):
 
     # Elimate <0 values
     for n in node.children:
-        if n.number[0] < 0:
+        if n.number[0] < 0  or n.number[0] > 9:
             node.children.remove(n)
-        elif n.number[1] < 0:
+            continue
+        elif n.number[1] < 0 or n.number[1] > 9:
             node.children.remove(n)
-        elif n.number[2] < 0:
+            continue
+        elif n.number[2] < 0 or n.number[2] > 9:
             node.children.remove(n)
+            continue
 
     # Eliminate nodes same as parent
     return node.children
@@ -215,8 +253,41 @@ def generate_children(node, goal):
 #-----------------------------#
 
 #TODO
-def a_star():
+def a_star(root, goal, forbiddens):
+    expanded = []
+    fringe = Queue()
+    fringe.put(root)
+
+    while len(expanded) < 1000:
+        if fringe.empty():
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        n = fringe.get()
+        while n in expanded or n.number in forbiddens:
+            if fringe.empty():
+                print("No solution found.")
+                print(','.join(str(e) for e in expanded))
+                return
+            n = fringe.get()
+        expanded.append(n)
+        if n.number == goal:
+            path = get_path(n)
+            print(','.join(str(e) for e in path))
+            print(','.join(str(e) for e in expanded))
+            return
+        children = generate_children(n, goal)
+        print(children)
+        print(fringe.q)
+        for c in children:
+            fringe.put(c)
+        print(fringe.q)
+        print("")
+    print("No solution found.")
+    print(','.join(str(e) for e in expanded))
     return
+
+
 
 def bfs(root, goal, forbiddens):
     expanded = []
@@ -229,7 +300,6 @@ def bfs(root, goal, forbiddens):
 
     if root.number == goal:
         path = get_path(root)
-        print(path)
         print(','.join(str(e) for e in path))
         print(','.join(str(e) for e in expanded))
         return
@@ -242,7 +312,13 @@ def bfs(root, goal, forbiddens):
         #print(','.join(str(e) for e in fringe))
 
     for i in range(1, 1000):
+        if len(fringe) == 0:
+            return
         n = fringe.pop(0)
+        while n in expanded or  n.number in forbiddens:
+            if len(fringe) == 0:
+                return
+            n = fringe.pop(0)
         expanded.append(n)
         if n.number == goal:
             path = get_path(n)
@@ -252,8 +328,6 @@ def bfs(root, goal, forbiddens):
             return
         else:
             for c in generate_children(n, goal):
-                if c.number in forbiddens or c in expanded or c.number == root.number:
-                    continue
                 fringe.append(c)
                 #print("Error checking printout:")
                 #print(','.join(str(e) for e in fringe))
@@ -265,40 +339,110 @@ def bfs(root, goal, forbiddens):
 def dfs(root, goal, forbiddens):
     expanded = []
     fringe = []
-
-    expanded.append(root)
-
-    if root.number == goal:
-        path = get_path(root)
-        print(','.join(str(e) for e in path))
-        print(','.join(str(e) for e in expanded))
-        return
-
-    for n in generate_children(root, goal):
-        if (n.number in forbiddens):
-            continue
-        fringe.append(n)
-
-    for i in range(1, 1000):
+    fringe.append(root)
+    while len(expanded) < 1000:
+        if len(fringe) == 0:
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
         n = fringe.pop(0)
+        if n in expanded or n.number in forbiddens:
+            continue
+        expanded.append(n)
+
+        if n.number == goal:
+            path = get_path(n)
+            print(','.join(str(e) for e in path))
+            print(','.join(str(e) for e in expanded))
+            return
+
+        i = 0
+        for c in generate_children(n, goal):
+            fringe.insert(i, c)
+            i += 1
+    print("No path found.")
+    print(','.join(str(e) for e in expanded))
+
+def ids(root, goal, forbiddens):
+
+    expanded = []
+    loop_expand = []
+    fringe = []
+    max_depth = 1
+    current_depth = 0
+    fringe.append(root)
+    while current_depth < max_depth:
+        #print(current_depth)
+        if len(expanded) >= 1000:
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        if len(fringe) == 0:
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        n = fringe.pop(0)
+        if n.number == goal:
+            path = get_path(n)
+            print(','.join(str(e) for e in path))
+            print(','.join(str(e) for e in expanded))
+            return
+
+        if n in loop_expand or n.number in forbiddens:
+            continue
+
+
+        loop_expand.append(n)
+        expanded.append(n)
+
+        for c in generate_children(n, goal):
+            fringe.append(c)
+
+        current_depth = len(get_path(n))
+        if current_depth == max_depth:
+            for l in loop_expand:
+                expanded.append(l)
+            loop_expand = []
+            fringe = []
+            fringe.append(root)
+            max_depth += 1
+    print("????")
+def greedy(root, goal, forbiddens):
+    expanded = []
+    fringe = Queue()
+    fringe.put(root)
+
+    while len(expanded) < 1000:
+        if fringe.empty():
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        n = fringe.get()
+        while n in expanded or n.number in forbiddens:
+            if fringe.empty():
+                print("No solution found.")
+                print(','.join(str(e) for e in expanded))
+                return
+            n = fringe.get()
         expanded.append(n)
         if n.number == goal:
             path = get_path(n)
             print(','.join(str(e) for e in path))
             print(','.join(str(e) for e in expanded))
             return
-        else:
-            i = 0
-            for c in generate_children(n, goal):
-                if c.number in forbiddens or str(c) in str(expanded):
-                    continue
-                fringe.insert(i, c)
-                i += 1
-        #print(fringe)
-        #print(expanded)
-        #print("\n")
+        children = generate_children(n, goal)
+        print(children)
+        print(fringe.q)
+        for c in children:
+            c.h += n.h
+            fringe.put(c)
+        print(fringe.q)
+        print("")
+    print("No solution found.")
+    print(','.join(str(e) for e in expanded))
+    return
 
-def ids(root, goal, forbiddens):
+def hill_climbing(root, goal, forbiddens):
     expanded = []
     fringe = []
 
@@ -310,32 +454,37 @@ def ids(root, goal, forbiddens):
         print(','.join(str(e) for e in expanded))
         return
 
+    current_closest = root
     for n in generate_children(root, goal):
-        if n.number in forbiddens:
-            continue
-        fringe.append(n)
+        if (n.h <= current_closest.h):
+            current_closest = n
+    if root.h == current_closest.h:
+        print("No solution found.")
+        print(','.join(str(e) for e in expanded))
+        return
+    fringe.append(current_closest)
 
     for i in range(1, 1000):
-        n = fringe.pop(0)
-        expanded.append(n)
-        if n.number == goal:
-            path = get_path(n)
-            print(','.join(str(e) for e in path))
+        if len(fringe) == 0:
+            print("No solution found.")
             print(','.join(str(e) for e in expanded))
             return
-        else:
-            i = 0
-            for c in generate_children(n, goal):
-                if c.number in forbiddens or str(c) in str(expanded):
-                    continue
-                fringe.insert(i, c)
-                i += 1
-
-def greedy():
-    return
-
-def hill_climbing():
-    return
+        n = fringe.pop(0)
+        if n.number in forbiddens or n in expanded:
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        # print (str(n) + "Was expanded")
+        expanded.append(n)
+        current_closest = n
+        for m in generate_children(n, goal):
+            if (m.h <= current_closest.h):
+                current_closest = m
+        if current_closest.h == n.h:
+            print("No solution found.")
+            print(','.join(str(e) for e in expanded))
+            return
+        fringe.append(current_closest)
 
 #------------------------------#
 #             Main             #
@@ -363,18 +512,19 @@ for i in range(0, len(forbidden_values)):
 
 decision_tree_root = Node()
 decision_tree_root.number = start_state
+decision_tree_root.h = abs(end_state[0] - decision_tree_root.number[0]) + abs(end_state[1] - decision_tree_root.number[1]) + abs(end_state[2] - decision_tree_root.number[2])
 
 if search is 'B':
     bfs(decision_tree_root, end_state, forbidden_values)
 elif search is 'D':
     dfs(decision_tree_root, end_state, forbidden_values)
 elif search is 'I':
-    ids(decision_tree_root, end_state)
+    ids(decision_tree_root, end_state, forbidden_values)
 elif search is 'G':
-    greedy(decision_tree_root, end_state)
+    greedy(decision_tree_root, end_state, forbidden_values)
 elif search is 'A':
-    a_star(decision_tree_root, end_state)
+    a_star(decision_tree_root, end_state, forbidden_values)
 elif search is 'H':
-    hill_climbing(decision_tree_root, end_state)
+    hill_climbing(decision_tree_root, end_state, forbidden_values)
 else:
     print("Invalid search")
