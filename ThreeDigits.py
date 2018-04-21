@@ -106,15 +106,16 @@ def generate_children(node, goal):
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
-        new_children = new_children
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         new_children = new_children
         newChild = Node()
         newChild.number = list(node.number)
@@ -122,28 +123,32 @@ def generate_children(node, goal):
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         new_children = new_children
     elif node.previous_change is 0:
         newChild = Node()
@@ -152,28 +157,32 @@ def generate_children(node, goal):
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[2] < 0 or newChild.number[2] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[2] < 0 or newChild.number[2] > 9):
+            new_children.append(newChild)
     elif node.previous_change is 1:
         newChild = Node()
         newChild.number = list(node.number)
@@ -181,28 +190,32 @@ def generate_children(node, goal):
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] -= 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[2] += 1
         newChild.previous_change = 2
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
     elif node.previous_change is 2:
         newChild = Node()
         newChild.number = list(node.number)
@@ -210,41 +223,42 @@ def generate_children(node, goal):
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[0] += 1
         newChild.previous_change = 0
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[0] < 0 or newChild.number[0] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] -= 1
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
         newChild = Node()
         newChild.number = list(node.number)
         newChild.number[1] += 1
         newChild.previous_change = 1
         newChild.parent = node
         newChild.h = abs(goal[0] - newChild.number[0]) + abs(goal[1] - newChild.number[1]) + abs(goal[2] - newChild.number[2])
-        new_children.append(newChild)
+        if not (newChild.number[1] < 0 or newChild.number[1] > 9):
+            new_children.append(newChild)
     # print("Returned children for: " + str(node))
     # print(', '.join(str(e) for e in node.children))
 
     #  Elimate <0 values
     # TODO: No way to do this after the fact, values <0 and <9 must be prevented from generation
+
+    for c in new_children:
+        if c.number[0] > 9 or c.number[1] > 9 or c.number[2] > 9 or c.number[0] < 0 or c.number[1] < 0 or c.number[2] < 0:
+            new_children.remove(c)
     node.children = list(new_children)
-    for i in range(0, len(node.children)):
-        if node.children[i].number[0] < 0 or node.children[i].number[0] > 9:
-            node.children.remove(node.children[i])
-        elif node.children[i].number[1] < 0 or node.children[i].number[1] > 9:
-            node.children.remove(node.children[i])
-        elif node.children[i].number[2] < 0 or node.children[i].number[2] > 9:
-            node.children.remove(node.children[i])
 
     #  Eliminate nodes same as parent
     return node.children
