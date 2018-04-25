@@ -522,15 +522,22 @@ end_state = file.readline().replace('\n', '')
 end_state = list(end_state)
 forbidden_values_readin = file.readline().split(',')
 forbidden_values = []
+if start_state is None or end_state is None or len(start_state) is 0 or len(end_state) is 0:
+    print("Invalid arguments")
+    quit(1)
 for value in forbidden_values_readin:
     forbidden_values.append(list(value))
 
-for i in range(0, 3):
-    start_state[i] = int(start_state[i])
-    end_state[i] = int(end_state[i])
-for i in range(0, len(forbidden_values)):
-    for j in range(0, len(forbidden_values[i])):
-        forbidden_values[i][j] = int(forbidden_values[i][j])
+try:
+    for i in range(0, 3):
+        start_state[i] = int(start_state[i])
+        end_state[i] = int(end_state[i])
+    for i in range(0, len(forbidden_values)):
+        for j in range(0, len(forbidden_values[i])):
+            forbidden_values[i][j] = int(forbidden_values[i][j])
+except ValueError:
+    print("Invalid file")
+    quit(1)
 
 decision_tree_root = Node()
 decision_tree_root.number = start_state
@@ -550,3 +557,4 @@ elif search is 'H':
     hill_climbing(decision_tree_root, end_state, forbidden_values)
 else:
     print("Invalid search")
+    quit(1)
